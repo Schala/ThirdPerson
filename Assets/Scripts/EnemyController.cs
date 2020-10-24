@@ -41,7 +41,6 @@ public class EnemyController : ConsoleReadyBehaviour
 	float speed;
 	bool exiting = false;
 	bool ignoreWaypointCollision = false;
-	bool singing = false;
 	public bool attacking { get; set; }
 	static readonly System.Random random = new System.Random();
 
@@ -80,11 +79,7 @@ public class EnemyController : ConsoleReadyBehaviour
 		else
 			agent.enabled = true;
 
-		if (!audioSource.isPlaying)
-		{
-			singing = true;
-			StartCoroutine(Sing());
-		}
+		if (!audioSource.isPlaying) StartCoroutine(Sing());
 	}
 
 	public IEnumerator Attack()
@@ -139,7 +134,6 @@ public class EnemyController : ConsoleReadyBehaviour
 		audioSource.pitch = Mathf.Clamp(UnityEngine.Random.value, 0.25f, 0.5f);
 		audioSource.Play();
 		yield return new WaitForSeconds(audioSource.clip.length + singPause);
-		singing = false;
 	}
 
 	private void OnDestroy()
