@@ -28,15 +28,15 @@ public class EnemyController : ConsoleReadyBehaviour
 	public LayerMask layerMask;
 	public int health = 10;
 	public float corpseDespawnDelay = 5f;
-	public float singPause = 5f;
 	public float deathEffectLifetime = 3f;
 	public float attackInterval = 1f;
 	public float attackDistance = 0.75f;
 	Animator animator;
 	AudioSource audioSource;
+	AudioClip attackAudio;
 	public NavMeshAgent agent { get; private set; }
 	public GameObject aggroTarget { get; private set; }
-	CharacterController controller;
+	//CharacterController controller;
 	ParticleSystem deathEffect;
 	float speed;
 	bool exiting = false;
@@ -53,14 +53,12 @@ public class EnemyController : ConsoleReadyBehaviour
 		GetComponentInChildren<AggroTrigger>().aggroCallback = OnAggro;
 		aggroTarget = null;
 		deathEffect = Resources.Load<ParticleSystem>("Prefabs/Death Effect");
-		controller = GetComponent<CharacterController>();
+		attackAudio = Resources.Load<AudioClip>("Audio/hit");
+		//controller = GetComponent<CharacterController>();
 		attacking = false;
 
 		agent.SetDestination(spawner.nearbyWaypoints[random.Next(spawner.nearbyWaypoints.Length - 1)].transform.position);
 		animator.SetFloat(GameManager.SPEED_HASH, agent.speed);
-
-		if (IsInvoking(nameof(Sing))) return;
-		InvokeRepeating(nameof(Sing), 0f, audioSource.clip.length + singPause);
     }
 
 	void Update()
@@ -74,10 +72,10 @@ public class EnemyController : ConsoleReadyBehaviour
 			Destroy(gameObject, corpseDespawnDelay);
 		}
 
-		if (animator.GetCurrentAnimatorStateInfo(2).tagHash != 0) // agonising in place
+		/*if (animator.GetCurrentAnimatorStateInfo(2).tagHash != 0) // agonising in place
 			agent.enabled = false;
 		else
-			agent.enabled = true;
+			agent.enabled = true;*/
 
 		if (!audioSource.isPlaying) StartCoroutine(Sing());
 	}
@@ -109,7 +107,7 @@ public class EnemyController : ConsoleReadyBehaviour
 			ignoreWaypointCollision = false;
 	}
 
-	public void PlayHit() => GetComponentInChildren<AttackTrigger>().gameObject.GetComponent<AudioSource>().Play();
+	public void PlayHit() => AudioSource.PlayClipAtPoint(attackAudio, transform.position);
 
 	void FindNextWaypoint(GameObject currentWaypoint)
 	{
@@ -133,7 +131,7 @@ public class EnemyController : ConsoleReadyBehaviour
 	{
 		audioSource.pitch = Mathf.Clamp(UnityEngine.Random.value, 0.25f, 0.5f);
 		audioSource.Play();
-		yield return new WaitForSeconds(audioSource.clip.length + singPause);
+		yield return new WaitForSeconds(audioSource.clip.length);
 	}
 
 	private void OnDestroy()
