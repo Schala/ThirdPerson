@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
  */
- 
+
 using System;
 using System.Collections;
 using UnityEngine;
@@ -42,7 +42,6 @@ public class EnemyController : ConsoleReadyBehaviour
 	bool exiting = false;
 	bool ignoreWaypointCollision = false;
 	public bool attacking { get; set; }
-	static readonly System.Random random = new System.Random();
 
 	void Start()
     {
@@ -57,7 +56,7 @@ public class EnemyController : ConsoleReadyBehaviour
 		//controller = GetComponent<CharacterController>();
 		attacking = false;
 
-		agent.SetDestination(spawner.nearbyWaypoints[random.Next(spawner.nearbyWaypoints.Length - 1)].transform.position);
+		agent.SetDestination(spawner.nearbyWaypoints[GameManager.random.Next(spawner.nearbyWaypoints.Length - 1)].transform.position);
 		animator.SetFloat(GameManager.SPEED_HASH, agent.speed);
     }
 
@@ -68,7 +67,7 @@ public class EnemyController : ConsoleReadyBehaviour
 			animator.SetBool(GameManager.DEAD_HASH, true);
 			agent.enabled = false;
 			aggroTarget = null;
-			if (audioSource.isPlaying) audioSource.pitch = UnityEngine.Random.value * random.Next(1, 5);
+			if (audioSource.isPlaying) audioSource.pitch = UnityEngine.Random.value * GameManager.random.Next(1, 5);
 			Destroy(gameObject, corpseDespawnDelay);
 		}
 
@@ -82,7 +81,7 @@ public class EnemyController : ConsoleReadyBehaviour
 
 	public IEnumerator Attack()
 	{
-		animator.SetInteger(GameManager.ATTACK_VARIANT_HASH, random.Next(0, 3));
+		animator.SetInteger(GameManager.ATTACK_VARIANT_HASH, GameManager.random.Next(0, 3));
 		animator.SetTrigger(GameManager.ATTACK_HASH);
 		yield return new WaitForSeconds(attackInterval);
 		attacking = false;
@@ -107,14 +106,18 @@ public class EnemyController : ConsoleReadyBehaviour
 			ignoreWaypointCollision = false;
 	}
 
-	public void PlayHit() => AudioSource.PlayClipAtPoint(attackAudio, transform.position);
+	public void PlayHit()
+	{
+		AudioSource.PlayClipAtPoint(attackAudio, transform.position);
+		aggroTarget.GetComponent<PlayerController>().Damage(GameManager.random.Next(2, 6));
+	}
 
 	void FindNextWaypoint(GameObject currentWaypoint)
 	{
-		int nextWaypoint = random.Next(spawner.nearbyWaypoints.Length - 1);
+		int nextWaypoint = GameManager.random.Next(spawner.nearbyWaypoints.Length - 1);
 
 		while (spawner.nearbyWaypoints[nextWaypoint].GetInstanceID() == currentWaypoint.GetInstanceID())
-			nextWaypoint = random.Next(spawner.nearbyWaypoints.Length - 1);
+			nextWaypoint = GameManager.random.Next(spawner.nearbyWaypoints.Length - 1);
 
 		agent.SetDestination(spawner.nearbyWaypoints[nextWaypoint].transform.position);
 	}

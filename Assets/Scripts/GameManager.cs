@@ -37,8 +37,10 @@ public class GameManager : MonoBehaviour
 	public static readonly int DEAD_HASH = Animator.StringToHash("Dead");
 	public static readonly int FIRING_HASH = Animator.StringToHash("Firing");
 	public static readonly int HURT_HASH = Animator.StringToHash("Hurt");
+	public static readonly int HURT_VARIANT_HASH = Animator.StringToHash("Hurt Variant");
 	public static readonly int JUMP_HASH = Animator.StringToHash(JUMP);
 	public static readonly int SPEED_HASH = Animator.StringToHash("Speed");
+	public static readonly System.Random random = new System.Random();
 
 	public Dictionary<int, GameObject> objects;
 	public AudioClip[] tracks;

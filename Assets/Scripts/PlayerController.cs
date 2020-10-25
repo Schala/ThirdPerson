@@ -99,4 +99,11 @@ public class PlayerController : MonoBehaviour
 		controllerVelocity.y += Mathf.Sqrt(jumpStrength * -3f * Physics.gravity.y);
 		controller.Move(controllerVelocity * Time.deltaTime);
 	}
+
+	public void Damage(int amount)
+	{
+		health -= amount;
+		animator.SetInteger(GameManager.HURT_VARIANT_HASH, GameManager.random.Next(0, 2));
+		animator.SetTrigger(GameManager.HURT_HASH);
+	}
 }
