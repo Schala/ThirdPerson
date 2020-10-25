@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 	public float jumpStrength = 1f;
 	public float moveSpeedMultiplier = 2f;
 	public int maxHealth = 100;
+	public float gravityScale = -3f;
 	Animator animator;
 	Quaternion freeRotation;
 	Vector3 controllerVelocity;
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
 	public void Jump()
 	{
-		controllerVelocity.y += Mathf.Sqrt(jumpStrength * -3f * Physics.gravity.y);
+		controllerVelocity.y += Mathf.Sqrt(jumpStrength * gravityScale * Physics.gravity.y);
 		controller.Move(controllerVelocity * Time.deltaTime);
 	}
 

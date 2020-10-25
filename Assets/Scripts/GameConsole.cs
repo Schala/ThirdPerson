@@ -52,7 +52,8 @@ public class GameConsole : MonoBehaviour
 			{ "KillAll", new CommandKillAll() },
             { "ShowColliders", new CommandShowColliders() },
             { "ToggleAI", new CommandToggleAI() },
-            { "GetAnimHash", new CommandGetAnimHash() }
+            { "GetAnimHash", new CommandGetAnimHash() },
+            { "GetPos", new CommandGetPos() }
 		};
 	}
 

@@ -19,17 +19,17 @@ using UnityEngine;
 public class Spawner : ConsoleReadyBehaviour
 {
     public GameObject[] enemyPrefabs;
-    public GameObject[] nearbyWaypoints;
-    public float interval = 45f;
-    public int limit = 3;
+    public float interval = 10f;
+    public int limit = 50;
     public bool active = true;
+    Collider boundary;
     float intervalDelta;
     int currentlySpawned = 0;
-    static readonly System.Random random = new System.Random();
 
     void Start()
     {
         Debug.Assert(enemyPrefabs != null);
+        boundary = GetComponent<Collider>();
         intervalDelta = interval;
     }
 
@@ -39,12 +39,15 @@ public class Spawner : ConsoleReadyBehaviour
 
         if (intervalDelta >= interval)
         {
-            EnemyController enemy = Instantiate(enemyPrefabs[random.Next(enemyPrefabs.Length)], transform.position, Quaternion.identity).GetComponent<EnemyController>();
-            enemy.spawnerCallback = OnDespawn;
-            enemy.spawner = this;
-            currentlySpawned++;
-            intervalDelta = 0f;
-            GameConsole.AddMessage($"<color=#FFFF00>{ConsoleString()} spawned {enemy.ConsoleString()}</color>");
+            for (int i = currentlySpawned; i <= limit; i++)
+            {
+                EnemyController enemy = Instantiate(enemyPrefabs[GameManager.random.Next(enemyPrefabs.Length)], RandomPoint(), Quaternion.identity).GetComponent<EnemyController>();
+                enemy.spawner = this;
+                enemy.spawnerCallback = OnDespawn;
+                currentlySpawned++;
+                intervalDelta = 0f;
+                GameConsole.AddMessage($"<color=#FFFF00>{ConsoleString()} spawned {enemy.ConsoleString()} at {FindObjectOfType<Terrain>().transform.TransformPoint(enemy.transform.position)}</color>");
+            }
         }
 
         if (intervalDelta < interval) intervalDelta += Time.deltaTime;
@@ -52,15 +55,20 @@ public class Spawner : ConsoleReadyBehaviour
 
     void OnDespawn() => currentlySpawned--;
 
-    private void OnTriggerEnter(Collider other)
-	{
-        if (!other.gameObject.CompareTag(GameManager.PLAYER)) return;
-        active = false;
-	}
+    public Vector3 RandomPoint()
+    {
+        return new Vector3
+        {
+            x = Random.Range(boundary.bounds.min.x, boundary.bounds.max.x),
+            y = boundary.bounds.min.y,
+            z = Random.Range(boundary.bounds.min.z, boundary.bounds.max.z),
+        };
+    }
 
 	private void OnTriggerExit(Collider other)
 	{
-        if (!other.gameObject.CompareTag(GameManager.PLAYER)) return;
-        active = true;
+        if (!other.gameObject.CompareTag(GameManager.ENEMY)) return;
+        Destroy(other.gameObject);
+        GameConsole.AddMessage($"<color=#FF0000>{other.gameObject.GetComponent<EnemyController>().ConsoleString()} destroyed for exiting map boundaries.</color>");
     }
 }

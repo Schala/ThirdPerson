@@ -36,11 +36,11 @@ public class EnemyController : ConsoleReadyBehaviour
 	AudioClip attackAudio;
 	public NavMeshAgent agent { get; private set; }
 	public GameObject aggroTarget { get; private set; }
-	//CharacterController controller;
+	CharacterController controller;
 	ParticleSystem deathEffect;
-	float speed;
+	Vector3 nextWaypoint;
+	//float speed; // future plans, dynamic movement speed?
 	bool exiting = false;
-	bool ignoreWaypointCollision = false;
 	public bool attacking { get; set; }
 
 	void Start()
@@ -48,15 +48,14 @@ public class EnemyController : ConsoleReadyBehaviour
         animator = GetComponent<Animator>();
 		audioSource = GetComponent<AudioSource>();
 		agent = GetComponent<NavMeshAgent>();
-		speed = agent.speed;
+		//speed = agent.speed;
 		GetComponentInChildren<AggroTrigger>().aggroCallback = OnAggro;
 		aggroTarget = null;
 		deathEffect = Resources.Load<ParticleSystem>("Prefabs/Death Effect");
 		attackAudio = Resources.Load<AudioClip>("Audio/hit");
-		//controller = GetComponent<CharacterController>();
+		nextWaypoint = spawner.RandomPoint();
+		controller = GetComponent<CharacterController>();
 		attacking = false;
-
-		agent.SetDestination(spawner.nearbyWaypoints[GameManager.random.Next(spawner.nearbyWaypoints.Length - 1)].transform.position);
 		animator.SetFloat(GameManager.SPEED_HASH, agent.speed);
     }
 
@@ -69,6 +68,13 @@ public class EnemyController : ConsoleReadyBehaviour
 			aggroTarget = null;
 			if (audioSource.isPlaying) audioSource.pitch = UnityEngine.Random.value * GameManager.random.Next(1, 5);
 			Destroy(gameObject, corpseDespawnDelay);
+		}
+
+		if (agent.enabled && controller.isGrounded && (transform.position.x > (nextWaypoint.x - 1) && transform.position.y > (nextWaypoint.y - 1) &&
+			transform.position.x < (nextWaypoint.x + 1) && transform.position.y < (nextWaypoint.y + 1)))
+		{
+			nextWaypoint = spawner.RandomPoint();
+			agent.SetDestination(nextWaypoint);
 		}
 
 		/*if (animator.GetCurrentAnimatorStateInfo(2).tagHash != 0) // agonising in place
@@ -87,39 +93,12 @@ public class EnemyController : ConsoleReadyBehaviour
 		attacking = false;
 	}
 
-	private void OnTriggerEnter(Collider other)
-	{
-		if (!agent.enabled) return;
-
-		if (!ignoreWaypointCollision && other.gameObject.CompareTag(GameManager.WAYPOINT))
-		{
-			FindNextWaypoint(other.gameObject);
-			ignoreWaypointCollision = true; // so we don't set the destination every update, since we're colliding currently
-		}
-	}
-
-	private void OnTriggerExit(Collider other)
-	{
-		if (!agent.enabled) return;
-
-		if (other.gameObject.CompareTag(GameManager.WAYPOINT))
-			ignoreWaypointCollision = false;
-	}
-
 	public void PlayHit()
 	{
+		if (!aggroTarget) return;
+
 		AudioSource.PlayClipAtPoint(attackAudio, transform.position);
 		aggroTarget.GetComponent<PlayerController>().Damage(GameManager.random.Next(2, 6));
-	}
-
-	void FindNextWaypoint(GameObject currentWaypoint)
-	{
-		int nextWaypoint = GameManager.random.Next(spawner.nearbyWaypoints.Length - 1);
-
-		while (spawner.nearbyWaypoints[nextWaypoint].GetInstanceID() == currentWaypoint.GetInstanceID())
-			nextWaypoint = GameManager.random.Next(spawner.nearbyWaypoints.Length - 1);
-
-		agent.SetDestination(spawner.nearbyWaypoints[nextWaypoint].transform.position);
 	}
 
 	public void Damage(int damage)
@@ -154,14 +133,11 @@ public class EnemyController : ConsoleReadyBehaviour
 		if (entering && other.gameObject.CompareTag(GameManager.PLAYER))
 		{
 			aggroTarget = other.gameObject;
-			ignoreWaypointCollision = true;
 			GameConsole.AddMessage($"<color=#FF0000>{ConsoleString()} has spotted \"{other.gameObject.name}\" ({other.gameObject.GetInstanceID():X8}) at a distance of {Vector3.Distance(other.gameObject.transform.position, gameObject.transform.position)}</color>");
 		}
 		if (!entering && other.gameObject.CompareTag(GameManager.PLAYER))
 		{
 			aggroTarget = null;
-			ignoreWaypointCollision = false;
-			FindNextWaypoint(other.gameObject);
 			GameConsole.AddMessage($"<color=#00FF00>{ConsoleString()} has lost \"{other.gameObject.name}\" ({other.gameObject.GetInstanceID():X8})</color>");
 		}
 	}
