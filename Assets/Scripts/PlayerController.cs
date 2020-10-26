@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	public float moveSpeedMultiplier = 2f;
 	public int maxHealth = 100;
 	public float gravityScale = -3f;
+	public float groundDistanceFactor = 10f;
 	Animator animator;
 	Quaternion freeRotation;
 	Vector3 controllerVelocity;
@@ -70,12 +71,12 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	/*private void FixedUpdate()
+	private void FixedUpdate()
 	{
 		if (controllerVelocity.y < 0f)
-			if (Physics.Raycast(transform.position, -Vector3.up, out _, 1f))
+			if (Physics.Raycast(transform.position, -Vector3.up, out _, groundDistanceFactor))
 				controllerVelocity.y = 0f;
-	}*/
+	}
 
 	void Move()
 	{
