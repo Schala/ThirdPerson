@@ -70,10 +70,16 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	/*private void FixedUpdate()
+	{
+		if (controllerVelocity.y < 0f)
+			if (Physics.Raycast(transform.position, -Vector3.up, out _, 1f))
+				controllerVelocity.y = 0f;
+	}*/
+
 	void Move()
 	{
 		controllerVelocity = controller.velocity;
-		if (controller.isGrounded && controllerVelocity.y < 0f) controllerVelocity.y = 0f;
 
 		moveSpeed = Mathf.Clamp(/*input.x + */input.z, -1f, 1f);
 		moveSpeed = Mathf.SmoothDamp(animator.GetFloat(GameManager.SPEED_HASH), moveSpeed, ref velocity, 0.1f);
