@@ -16,6 +16,7 @@
  
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,10 +38,13 @@ public class GameConsole : MonoBehaviour
     public static GameObject selection { get; private set; }
     public static GameObject player { get; set; }
     public GameObject console;
-    public InputField consoleInput;
-    public Text selectionText;
-    public Text logText;
+    public GameObject contentPane;
+    public TMP_InputField consoleInput;
+    public TMP_Text selectionText;
     public LayerMask layerMask;
+    public int entryLimit = 256;
+    List<TMP_Text> entries;
+    TMP_Text entryPrefab;
 
 	private void Awake()
 	{
@@ -61,6 +65,8 @@ public class GameConsole : MonoBehaviour
     {
         console.SetActive(false);
         selection = null;
+        entryPrefab = Resources.Load<TMP_Text>("Prefabs/Console Entry");
+        entries = new List<TMP_Text>();
     }
 
     private void OnEnable() => Application.logMessageReceived += OnLogMessage;
@@ -80,6 +86,7 @@ public class GameConsole : MonoBehaviour
         if (console.activeInHierarchy)
         {
             consoleInput.Select();
+            consoleInput.ActivateInputField();
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -103,11 +110,21 @@ public class GameConsole : MonoBehaviour
                 AddMessage(consoleInput.text);
                 ParseInput(consoleInput.text);
                 consoleInput.text = string.Empty;
+                consoleInput.Select();
+                consoleInput.ActivateInputField();
             }
         }
 	}
 
-    void AddMessageInternal(string message) => logText.text += message + "\n";
+    void AddMessageInternal(string message)
+    {
+        TMP_Text entry = Instantiate(entryPrefab);
+        entries.Add(entry);
+        entry.transform.SetParent(contentPane.transform);
+        entry.text = message;
+        if (entries.Count > entryLimit) entries.RemoveAt(0);
+    }
+
     public static void AddMessage(string message) => instance.AddMessageInternal(message);
 
     void ParseInput(string input)

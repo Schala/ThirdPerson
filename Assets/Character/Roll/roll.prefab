@@ -3090,6 +3090,8 @@ MonoBehaviour:
   jumpStrength: 1
   moveSpeedMultiplier: 3
   maxHealth: 100
+  gravityScale: -3
+  groundDistanceFactor: -10
 --- !u!136 &45812228435715102
 CapsuleCollider:
   m_ObjectHideFlags: 0
