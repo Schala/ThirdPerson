@@ -34,9 +34,9 @@ public class EnemyController : ConsoleReadyBehaviour
 	Animator animator;
 	AudioSource audioSource;
 	AudioClip attackAudio;
-	public NavMeshAgent agent { get; private set; }
+	public NavMeshAgent agent { get; set; }
 	public GameObject aggroTarget { get; private set; }
-	CharacterController controller;
+	public CharacterController controller { get; private set; }
 	ParticleSystem deathEffect;
 	Vector3 nextWaypoint;
 	//float speed; // future plans, dynamic movement speed?
@@ -47,7 +47,6 @@ public class EnemyController : ConsoleReadyBehaviour
     {
         animator = GetComponent<Animator>();
 		audioSource = GetComponent<AudioSource>();
-		agent = GetComponent<NavMeshAgent>();
 		//speed = agent.speed;
 		GetComponentInChildren<AggroTrigger>().aggroCallback = OnAggro;
 		aggroTarget = null;
@@ -70,8 +69,8 @@ public class EnemyController : ConsoleReadyBehaviour
 			Destroy(gameObject, corpseDespawnDelay);
 		}
 
-		if (agent.enabled && controller.isGrounded && (transform.position.x > (nextWaypoint.x - 1) && transform.position.y > (nextWaypoint.y - 1) &&
-			transform.position.x < (nextWaypoint.x + 1) && transform.position.y < (nextWaypoint.y + 1)))
+		if (transform.position.x > (nextWaypoint.x - 1) && transform.position.y > (nextWaypoint.y - 1) &&
+			transform.position.x < (nextWaypoint.x + 1) && transform.position.y < (nextWaypoint.y + 1))
 		{
 			nextWaypoint = spawner.RandomPoint();
 			agent.SetDestination(nextWaypoint);

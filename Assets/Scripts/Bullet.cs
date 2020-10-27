@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
 			AudioSource announcerAudio = GameObject.Find(GameManager.ANNOUNCER).GetComponent<AudioSource>();
 			announcerAudio.clip = game.announcerClips[0];
 			announcerAudio.Play();
-			game.dialogue.text = "At first, the sound merely paralyses...\nAfter that... your mind will feel as if it's seeping out of your ears.";
+			//game.dialogue.text = "At first, the sound merely paralyses...\nAfter that... your mind will feel as if it's seeping out of your ears.";
 			soundExplained = true;
 		}
 	}

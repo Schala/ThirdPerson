@@ -508,7 +508,7 @@ MonoBehaviour:
   - {fileID: 5064636200983686678, guid: 092168320f84b4a4fb952fd36e2308f8, type: 3}
   - {fileID: 2705422697649930295, guid: 01154de9508ac774aa61b1d8e9cc4818, type: 3}
   interval: 10
-  limit: 50
+  limit: 10
   active: 1
 --- !u!1 &340418342 stripped
 GameObject:
@@ -1784,6 +1784,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 791
+  entryLimit: 256
 --- !u!1 &709589669 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100006, guid: 8d44a8bf542ec854ab6a6c818ea10b8a, type: 3}

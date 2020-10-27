@@ -15,12 +15,15 @@
  */
  
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Spawner : ConsoleReadyBehaviour
 {
     public GameObject[] enemyPrefabs;
     public float interval = 10f;
     public int limit = 50;
+    public float navMeshCheckDistance = 100f;
+    public float enemySpeed = 0.5f;
     public bool active = true;
     Collider boundary;
     float intervalDelta;
@@ -41,7 +44,22 @@ public class Spawner : ConsoleReadyBehaviour
         {
             for (int i = currentlySpawned; i <= limit; i++)
             {
-                EnemyController enemy = Instantiate(enemyPrefabs[GameManager.random.Next(enemyPrefabs.Length)], RandomPoint(), Quaternion.identity).GetComponent<EnemyController>();
+                Vector3 point = RandomPoint();
+                GameObject enemyObject = Instantiate(enemyPrefabs[GameManager.random.Next(enemyPrefabs.Length)], point, Quaternion.identity);
+                EnemyController enemy = enemyObject.GetComponent<EnemyController>();
+
+                if (NavMesh.SamplePosition(point, out NavMeshHit hit, navMeshCheckDistance, NavMesh.AllAreas))
+                {
+                    enemyObject.transform.position = hit.position;
+                    enemy.agent = enemyObject.AddComponent<NavMeshAgent>();
+                    enemy.agent.speed = enemySpeed;
+                }
+                else
+                {
+                    GameConsole.AddMessage($"<color=#FF0000>{enemy.ConsoleString()} destroyed for null NavAgent</color>");
+                    Destroy(enemyObject);
+                }
+
                 enemy.spawner = this;
                 enemy.spawnerCallback = OnDespawn;
                 currentlySpawned++;
@@ -60,7 +78,7 @@ public class Spawner : ConsoleReadyBehaviour
         return new Vector3
         {
             x = Random.Range(boundary.bounds.min.x, boundary.bounds.max.x),
-            y = boundary.bounds.min.y,
+            y = boundary.bounds.max.y,
             z = Random.Range(boundary.bounds.min.z, boundary.bounds.max.z),
         };
     }
@@ -68,7 +86,7 @@ public class Spawner : ConsoleReadyBehaviour
 	private void OnTriggerExit(Collider other)
 	{
         if (!other.gameObject.CompareTag(GameManager.ENEMY)) return;
-        Destroy(other.gameObject);
         GameConsole.AddMessage($"<color=#FF0000>{other.gameObject.GetComponent<EnemyController>().ConsoleString()} destroyed for exiting map boundaries.</color>");
+        Destroy(other.gameObject);
     }
 }
