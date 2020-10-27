@@ -25,8 +25,9 @@ public class EnemyController : ConsoleReadyBehaviour
 	public Action spawnerCallback;
 	public Spawner spawner;
 	public GameObject castOrigin;
+	public GameObject hud;
 	public LayerMask layerMask;
-	public int health = 10;
+	public int maxHealth = 10;
 	public float corpseDespawnDelay = 5f;
 	public float deathEffectLifetime = 3f;
 	public float attackInterval = 1f;
@@ -34,29 +35,39 @@ public class EnemyController : ConsoleReadyBehaviour
 	Animator animator;
 	AudioSource audioSource;
 	AudioClip attackAudio;
+	HealthBar healthBar;
 	public NavMeshAgent agent { get; set; }
 	public GameObject aggroTarget { get; private set; }
 	public CharacterController controller { get; private set; }
+	public bool attacking { get; set; }
 	ParticleSystem deathEffect;
 	Vector3 nextWaypoint;
 	//float speed; // future plans, dynamic movement speed?
+	int health;
 	bool exiting = false;
-	public bool attacking { get; set; }
 
-	void Start()
-    {
-        animator = GetComponent<Animator>();
+	private void Awake()
+	{
+		animator = GetComponent<Animator>();
 		audioSource = GetComponent<AudioSource>();
-		//speed = agent.speed;
 		GetComponentInChildren<AggroTrigger>().aggroCallback = OnAggro;
 		aggroTarget = null;
 		deathEffect = Resources.Load<ParticleSystem>("Prefabs/Death Effect");
 		attackAudio = Resources.Load<AudioClip>("Audio/hit");
-		nextWaypoint = spawner.RandomPoint();
 		controller = GetComponent<CharacterController>();
+		healthBar = GetComponent<HealthBar>();
+		hud.SetActive(false);
+		health = maxHealth;
+		healthBar.maxValue = maxHealth;
+		healthBar.current = maxHealth;
 		attacking = false;
+	}
+
+	void Start()
+    {
+		nextWaypoint = spawner.RandomPoint();
 		animator.SetFloat(GameManager.SPEED_HASH, agent.speed);
-    }
+	}
 
 	void Update()
     {
@@ -103,6 +114,10 @@ public class EnemyController : ConsoleReadyBehaviour
 	public void Damage(int damage)
 	{
 		health -= damage;
+		hud.SetActive(health < maxHealth);
+		if (health > 0) healthBar.current -= damage;
+		else healthBar.current = 0;
+
 		animator.SetTrigger(GameManager.HURT_HASH);
 	}
 

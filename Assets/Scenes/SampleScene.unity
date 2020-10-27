@@ -1467,8 +1467,6 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   slider: {fileID: 1667980853}
   fill: {fileID: 1683601419}
-  maxValue: 0
-  value: 0
 --- !u!1 &628054617
 GameObject:
   m_ObjectHideFlags: 0
