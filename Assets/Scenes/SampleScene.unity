@@ -507,8 +507,11 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 5064636200983686678, guid: 092168320f84b4a4fb952fd36e2308f8, type: 3}
   - {fileID: 2705422697649930295, guid: 01154de9508ac774aa61b1d8e9cc4818, type: 3}
+  spawnAudio: {fileID: 8300000, guid: 2a947c3d485b90548bc355126662ad15, type: 3}
   interval: 10
-  limit: 10
+  limit: 50
+  navMeshCheckDistance: 100
+  enemySpeed: 0.5
   active: 1
 --- !u!1 &340418342 stripped
 GameObject:
@@ -4219,6 +4222,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: roll
       objectReference: {fileID: 0}
+    - target: {fileID: 7815975505728975220, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 1667980853}
     m_RemovedComponents:
     - {fileID: 7815975505728975228, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
     - {fileID: 7815975505728975231, guid: e59ded12715432d438d1a771d69f66b4, type: 3}

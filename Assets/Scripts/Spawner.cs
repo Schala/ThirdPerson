@@ -20,6 +20,7 @@ using UnityEngine.AI;
 public class Spawner : ConsoleReadyBehaviour
 {
     public GameObject[] enemyPrefabs;
+    public AudioClip spawnAudio;
     public float interval = 10f;
     public int limit = 50;
     public float navMeshCheckDistance = 100f;
@@ -58,6 +59,7 @@ public class Spawner : ConsoleReadyBehaviour
                 {
                     GameConsole.AddMessage($"<color=#FF0000>{enemy.ConsoleString()} destroyed for null NavAgent</color>");
                     Destroy(enemyObject);
+                    break;
                 }
 
                 enemy.spawner = this;
@@ -65,6 +67,7 @@ public class Spawner : ConsoleReadyBehaviour
                 currentlySpawned++;
                 intervalDelta = 0f;
                 GameConsole.AddMessage($"<color=#FFFF00>{ConsoleString()} spawned {enemy.ConsoleString()} at {FindObjectOfType<Terrain>().transform.TransformPoint(enemy.transform.position)}</color>");
+                AudioSource.PlayClipAtPoint(spawnAudio, enemyObject.transform.position);
             }
         }
 

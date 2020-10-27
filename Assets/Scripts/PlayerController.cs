@@ -15,10 +15,12 @@
  */
  
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
 	public GameObject castTarget;
+	public Slider healthBar;
 	public float turnSpeed = 10f;
 	public float jumpStrength = 1f;
 	public float moveSpeedMultiplier = 2f;
@@ -42,7 +44,11 @@ public class PlayerController : MonoBehaviour
 		GameConsole.player = gameObject;
 	}
 
-	private void Start() => health = maxHealth;
+	private void Start()
+	{
+		health = maxHealth;
+		healthBar.value = maxHealth;
+	}
 
 	void Rotate()
 	{
@@ -111,6 +117,9 @@ public class PlayerController : MonoBehaviour
 	public void Damage(int amount)
 	{
 		health -= amount;
+		if (health > 0) healthBar.value -= amount;
+		else healthBar.value = 0;
+
 		animator.SetInteger(GameManager.HURT_VARIANT_HASH, GameManager.random.Next(0, 2));
 		animator.SetTrigger(GameManager.HURT_HASH);
 	}
