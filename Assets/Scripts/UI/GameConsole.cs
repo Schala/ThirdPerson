@@ -44,7 +44,9 @@ public class GameConsole : MonoBehaviour
     public LayerMask layerMask;
     public int entryLimit = 256;
     List<TMP_Text> entries;
+    List<string> commandCache;
     TMP_Text entryPrefab;
+    int cacheIndex = 0;
 
 	private void Awake()
 	{
@@ -68,6 +70,7 @@ public class GameConsole : MonoBehaviour
         selection = null;
         entryPrefab = Resources.Load<TMP_Text>("Prefabs/Console Entry");
         entries = new List<TMP_Text>();
+        commandCache = new List<string>();
     }
 
     private void OnEnable() => Application.logMessageReceived += OnLogMessage;
@@ -108,11 +111,29 @@ public class GameConsole : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return) && consoleInput.text != string.Empty)
             {
+                commandCache.Add(consoleInput.text);
+                cacheIndex = commandCache.Count - 1;
                 AddMessage(consoleInput.text);
                 ParseInput(consoleInput.text);
                 consoleInput.text = string.Empty;
                 consoleInput.Select();
                 consoleInput.ActivateInputField();
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow) && commandCache.Count > cacheIndex && cacheIndex >= 0)
+            {
+                consoleInput.text = commandCache[cacheIndex--];
+                consoleInput.Select();
+                consoleInput.ActivateInputField();
+                if (cacheIndex < 0) cacheIndex = 0;
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow) && cacheIndex < commandCache.Count)
+            {
+                consoleInput.text = commandCache[cacheIndex++];
+                consoleInput.Select();
+                consoleInput.ActivateInputField();
+                if (cacheIndex >= commandCache.Count) cacheIndex = commandCache.Count - 1;
             }
         }
 	}
