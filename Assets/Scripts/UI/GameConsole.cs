@@ -57,7 +57,8 @@ public class GameConsole : MonoBehaviour
             { "ShowColliders", new CommandShowColliders() },
             { "ToggleAI", new CommandToggleAI() },
             { "GetAnimHash", new CommandGetAnimHash() },
-            { "GetPos", new CommandGetPos() }
+            { "GetPos", new CommandGetPos() },
+            { "Damage", new CommandDamage() }
 		};
 	}
 

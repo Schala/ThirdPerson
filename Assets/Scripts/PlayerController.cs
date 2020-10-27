@@ -20,7 +20,6 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
 	public GameObject castTarget;
-	public Slider healthBar;
 	public float turnSpeed = 10f;
 	public float jumpStrength = 1f;
 	public float moveSpeedMultiplier = 2f;
@@ -32,6 +31,7 @@ public class PlayerController : MonoBehaviour
 	Vector3 controllerVelocity;
 	Vector3 input;
 	CharacterController controller;
+	HealthBar healthBar;
 	float moveSpeed = 0f;
 	//float direction = 0f; // future use if we get directional animations
 	float velocity;
@@ -42,12 +42,14 @@ public class PlayerController : MonoBehaviour
 		animator = GetComponent<Animator>();
 		controller = GetComponent<CharacterController>();
 		GameConsole.player = gameObject;
+		healthBar = GetComponent<HealthBar>();
 	}
 
 	private void Start()
 	{
 		health = maxHealth;
-		healthBar.value = maxHealth;
+		healthBar.maxValue = maxHealth;
+		healthBar.current = maxHealth;
 	}
 
 	void Rotate()
@@ -117,8 +119,8 @@ public class PlayerController : MonoBehaviour
 	public void Damage(int amount)
 	{
 		health -= amount;
-		if (health > 0) healthBar.value -= amount;
-		else healthBar.value = 0;
+		if (health > 0) healthBar.current -= amount;
+		else healthBar.current = 0;
 
 		animator.SetInteger(GameManager.HURT_VARIANT_HASH, GameManager.random.Next(0, 2));
 		animator.SetTrigger(GameManager.HURT_HASH);
