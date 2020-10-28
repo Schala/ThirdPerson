@@ -4266,6 +4266,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6497500600073605268, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6497500600073605268, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6497500600073605268, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6497500600073605268, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6497500600073605268, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6497500600073605268, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496947900941019049, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496947900941019049, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496947900941019049, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496947900941019049, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496947900941019049, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496947900941019049, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7815975505728975218, guid: e59ded12715432d438d1a771d69f66b4, type: 3}
       propertyPath: m_Name
       value: roll

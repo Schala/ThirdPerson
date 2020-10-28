@@ -14,9 +14,27 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+using TMPro;
 using UnityEngine;
 
-public class HUD : MonoBehaviour
+public class TextScrollFade : MonoBehaviour
 {
-    void LateUpdate() => transform.LookAt(transform.position + Camera.main.transform.forward);
+    public float maxLifetime = 1f;
+    public float speed = 1f;
+    TMP_Text text;
+    float lifetime = 0f;
+
+    private void Awake() => text = GetComponentInChildren<TMP_Text>();
+
+	void Update()
+    {
+        if (lifetime < maxLifetime)
+        {
+            transform.position += Vector3.up * speed * Time.deltaTime;
+            text.color = Color.Lerp(text.color, Color.clear, speed * Time.deltaTime);
+        }
+        else Destroy(gameObject);
+
+        lifetime += Time.deltaTime;
+    }
 }

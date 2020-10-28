@@ -13,9 +13,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
  */
- 
+
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
 	Vector3 input;
 	CharacterController controller;
 	HealthBar healthBar;
+	GameObject damageText;
 	float moveSpeed = 0f;
 	//float direction = 0f; // future use if we get directional animations
 	float velocity;
@@ -43,6 +44,7 @@ public class PlayerController : MonoBehaviour
 		controller = GetComponent<CharacterController>();
 		GameConsole.player = gameObject;
 		healthBar = GetComponent<HealthBar>();
+		damageText = Resources.Load<GameObject>("Prefabs/Damage Text");
 	}
 
 	private void Start()
@@ -121,6 +123,9 @@ public class PlayerController : MonoBehaviour
 		health -= amount;
 		if (health > 0) healthBar.current -= amount;
 		else healthBar.current = 0;
+
+		GameObject dtext = Instantiate(damageText, (Vector3.up * 2.125f) + transform.position, Quaternion.identity);
+		dtext.GetComponentInChildren<TMP_Text>().text = $"{amount}";
 
 		animator.SetInteger(GameManager.HURT_VARIANT_HASH, GameManager.random.Next(0, 2));
 		animator.SetTrigger(GameManager.HURT_HASH);
