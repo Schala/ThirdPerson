@@ -88,8 +88,18 @@ public class Spawner : ConsoleReadyBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-        if (!other.gameObject.CompareTag(GameManager.ENEMY)) return;
-        GameConsole.AddMessage($"<color=#FF0000>{other.gameObject.GetComponent<EnemyController>().ConsoleString()} destroyed for exiting map boundaries.</color>");
-        Destroy(other.gameObject);
+        if (other.gameObject.CompareTag(GameManager.ENEMY))
+        {
+            GameConsole.AddMessage($"<color=#FF0000>{other.gameObject.GetComponent<EnemyController>().ConsoleString()} destroyed for exiting map boundaries.</color>");
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.CompareTag(GameManager.PLAYER))
+        {
+            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+            GameConsole.AddMessage($"<color=#FF0000>{player.ConsoleString()} exited map boundaries and was moved to spawn point.</color>");
+            other.gameObject.transform.position = player.spawnPoint.position;
+            GameManager.Announce(GameManager.instance.announcerClips[5]);
+        }
     }
 }

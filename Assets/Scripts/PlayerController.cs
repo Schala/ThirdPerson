@@ -17,7 +17,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : ConsoleReadyBehaviour
 {
 	public GameObject castTarget;
 	public Transform spawnPoint;
