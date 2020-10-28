@@ -45,6 +45,7 @@ public class EnemyController : ConsoleReadyBehaviour
 	//float speed; // future plans, dynamic movement speed?
 	int health;
 	bool exiting = false;
+	bool announceDeath = false;
 
 	private void Awake()
 	{
@@ -77,6 +78,9 @@ public class EnemyController : ConsoleReadyBehaviour
 			agent.enabled = false;
 			aggroTarget = null;
 			if (audioSource.isPlaying) audioSource.pitch = UnityEngine.Random.value * GameManager.random.Next(1, 5);
+			if (GameManager.random.Next(2) == 1 && !announceDeath)
+				GameManager.Announce(GameManager.instance.announcerClips[GameManager.random.Next(2, 5)]);
+			announceDeath = true;
 			Destroy(gameObject, corpseDespawnDelay);
 		}
 

@@ -1704,6 +1704,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 702ddcb25f76b984082c6e62edde9b20, type: 3}
   announcerClips:
   - {fileID: 8300000, guid: 4ec5c879af093824d996da3f5a763a8f, type: 3}
+  - {fileID: 8300000, guid: 4db5ab779448aad439bae1803f88c14f, type: 3}
+  - {fileID: 8300000, guid: edf12bb7c2ecba9478bb89205addb3b9, type: 3}
+  - {fileID: 8300000, guid: 673370a0c2931674489232989fe0b524, type: 3}
+  - {fileID: 8300000, guid: a72ab47cb9cf13b4f980ff112d5a8d48, type: 3}
+  - {fileID: 8300000, guid: dc0314016db287346bf7566f2a3c6c05, type: 3}
+  - {fileID: 8300000, guid: 423dbf0d866edc643b6cad8e060d515a, type: 3}
   dialogue: {fileID: 0}
 --- !u!4 &692802219
 Transform:
@@ -2437,6 +2443,36 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &967381582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 967381583}
+  m_Layer: 0
+  m_Name: Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &967381583
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967381582}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 248.9, y: 30.348, z: 222.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1003036267
 GameObject:
   m_ObjectHideFlags: 0

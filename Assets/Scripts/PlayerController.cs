@@ -20,6 +20,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 	public GameObject castTarget;
+	public Transform spawnPoint;
 	public float turnSpeed = 10f;
 	public float jumpStrength = 1f;
 	public float moveSpeedMultiplier = 2f;

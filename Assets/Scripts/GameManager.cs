@@ -15,6 +15,7 @@
  */
  
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,18 +42,22 @@ public class GameManager : MonoBehaviour
 	public static readonly int JUMP_HASH = Animator.StringToHash(JUMP);
 	public static readonly int SPEED_HASH = Animator.StringToHash("Speed");
 	public static readonly System.Random random = new System.Random();
+	public static GameManager instance { get; private set; }
 
 	public Dictionary<int, GameObject> objects;
 	public AudioClip[] tracks;
 	public AudioClip[] announcerClips;
 	public Text dialogue;
 	AudioSource audioSource;
+	AudioSource announcerAudio;
 	int trackIndex = 0;
 
 	private void Awake()
 	{
 		DontDestroyOnLoad(this.gameObject);
+		announcerAudio = GameObject.Find(GameManager.ANNOUNCER).GetComponent<AudioSource>();
 		objects = new Dictionary<int, GameObject>();
+		instance = this;
 	}
 
 	void Start()
@@ -74,4 +79,14 @@ public class GameManager : MonoBehaviour
 			trackIndex %= tracks.Length;
 		}
 	}
+
+	public void AnnounceInternal(AudioClip clip)
+	{
+		if (announcerAudio.isPlaying) announcerAudio.Stop();
+		announcerAudio.clip = clip;
+		announcerAudio.Play();
+	}
+
+	public static void Announce(AudioClip clip) => instance.AnnounceInternal(clip);
+
 }

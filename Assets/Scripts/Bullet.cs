@@ -20,9 +20,6 @@ public class Bullet : MonoBehaviour
 {
 	public int damage = 1;
 	static bool soundExplained = false;
-	GameManager game;
-
-	private void Start() => game = FindObjectOfType<GameManager>();
 
 	void OnTriggerEnter(Collider collider)
 	{
@@ -31,10 +28,7 @@ public class Bullet : MonoBehaviour
 
 		if (!soundExplained)
 		{
-			AudioSource announcerAudio = GameObject.Find(GameManager.ANNOUNCER).GetComponent<AudioSource>();
-			announcerAudio.clip = game.announcerClips[0];
-			announcerAudio.Play();
-			//game.dialogue.text = "At first, the sound merely paralyses...\nAfter that... your mind will feel as if it's seeping out of your ears.";
+			GameManager.Announce(GameManager.instance.announcerClips[0]);
 			soundExplained = true;
 		}
 	}
