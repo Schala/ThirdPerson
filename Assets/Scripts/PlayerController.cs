@@ -126,7 +126,7 @@ public class PlayerController : ConsoleReadyBehaviour
 		else healthBar.current = 0;
 
 		GameObject dtext = Instantiate(damageText, (Vector3.up * 2.125f) + transform.position, Quaternion.identity);
-		dtext.GetComponentInChildren<TMP_Text>().text = $"{amount}";
+		dtext.GetComponentInChildren<TMP_Text>().text = amount.ToString();
 
 		animator.SetInteger(GameManager.HURT_VARIANT_HASH, GameManager.random.Next(0, 2));
 		animator.SetTrigger(GameManager.HURT_HASH);

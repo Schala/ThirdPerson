@@ -120,7 +120,11 @@ public class EnemyController : ConsoleReadyBehaviour
 		health -= damage;
 		hud.SetActive(health < maxHealth);
 		if (health > 0) healthBar.current -= damage;
-		else healthBar.current = 0;
+		else
+		{
+			healthBar.current = 0;
+			if (!announceDeath) GameManager.AddToScore(GameManager.instance.scorePerEnemy);
+		}
 
 		animator.SetTrigger(GameManager.HURT_HASH);
 	}

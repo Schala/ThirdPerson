@@ -15,7 +15,7 @@
  */
  
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,15 +47,17 @@ public class GameManager : MonoBehaviour
 	public Dictionary<int, GameObject> objects;
 	public AudioClip[] tracks;
 	public AudioClip[] announcerClips;
-	public Text dialogue;
+	public TMP_Text scoreText;
+	public int scorePerEnemy = 50;
 	AudioSource audioSource;
 	AudioSource announcerAudio;
+	int score = 0;
 	int trackIndex = 0;
 
 	private void Awake()
 	{
 		DontDestroyOnLoad(this.gameObject);
-		announcerAudio = GameObject.Find(GameManager.ANNOUNCER).GetComponent<AudioSource>();
+		announcerAudio = GameObject.Find(ANNOUNCER).GetComponent<AudioSource>();
 		objects = new Dictionary<int, GameObject>();
 		instance = this;
 	}
@@ -88,5 +90,9 @@ public class GameManager : MonoBehaviour
 	}
 
 	public static void Announce(AudioClip clip) => instance.AnnounceInternal(clip);
-
+	public static void AddToScore(int points)
+	{
+		instance.score += points;
+		instance.scoreText.text = instance.score.ToString();
+	}
 }
