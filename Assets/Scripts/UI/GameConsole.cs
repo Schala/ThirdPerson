@@ -37,12 +37,17 @@ public class GameConsole : MonoBehaviour
     public static Dictionary<string, ConsoleCommand> commands { get; private set; }
     public static GameObject selection { get; private set; }
     public static GameObject player { get; set; }
+
+    [Header("UI")]
     public GameObject console;
     public GameObject contentPane;
     public TMP_InputField consoleInput;
     public TMP_Text selectionText;
+
+    [Header("Behavior")]
     public LayerMask layerMask;
     public int entryLimit = 256;
+
     List<TMP_Text> entries;
     List<string> commandCache;
     TMP_Text entryPrefab;

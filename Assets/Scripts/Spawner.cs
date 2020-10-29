@@ -19,13 +19,19 @@ using UnityEngine.AI;
 
 public class Spawner : ConsoleReadyBehaviour
 {
+    [Header("Behavior")]
     public GameObject[] enemyPrefabs;
-    public AudioClip spawnAudio;
     public float interval = 10f;
     public int limit = 50;
     public float navMeshCheckDistance = 100f;
-    public float enemySpeed = 0.5f;
     public bool active = true;
+
+    [Header("Spawn Info")]
+    public float enemySpeed = 0.5f;
+
+    [Header("Misc.")]
+    public AudioClip spawnAudio;
+
     Collider boundary;
     float intervalDelta;
     int currentlySpawned = 0;

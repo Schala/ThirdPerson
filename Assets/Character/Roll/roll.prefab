@@ -3085,11 +3085,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   castTarget: {fileID: 7815975505396367086}
+  spawnPoint: {fileID: 0}
   turnSpeed: 150
   jumpStrength: 1
   moveSpeedMultiplier: 3
   maxHealth: 100
-  gravityScale: -3
+  gravityScale: -5
   groundDistanceFactor: -10
 --- !u!1 &7815975505729644319
 GameObject:

@@ -21,17 +21,23 @@ using UnityEngine.AI;
 
 public class EnemyController : ConsoleReadyBehaviour
 {
-	public AudioClip deathAudio;
-	public Action spawnerCallback;
-	public Spawner spawner;
-	public GameObject castOrigin;
-	public GameObject hud;
+	[Header("Behavior")]
 	public LayerMask layerMask;
-	public int maxHealth = 10;
 	public float corpseDespawnDelay = 5f;
 	public float deathEffectLifetime = 3f;
 	public float attackInterval = 1f;
 	public float attackDistance = 0.75f;
+	public int maxHealth = 10;
+
+	[Header("Positioning")]
+	public Action spawnerCallback;
+	public Spawner spawner;
+	public GameObject castOrigin;
+
+	[Header("Aesthetic")]
+	public GameObject hud;
+	public AudioClip deathAudio;
+
 	Animator animator;
 	AudioSource audioSource;
 	AudioClip attackAudio;

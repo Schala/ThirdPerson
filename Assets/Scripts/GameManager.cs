@@ -45,10 +45,17 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance { get; private set; }
 
 	public Dictionary<int, GameObject> objects;
+
+	[Header("Audio")]
 	public AudioClip[] tracks;
 	public AudioClip[] announcerClips;
+
+	[Header("UI")]
 	public TMP_Text scoreText;
+
+	[Header("Gameplay")]
 	public int scorePerEnemy = 50;
+
 	AudioSource audioSource;
 	AudioSource announcerAudio;
 	int score = 0;

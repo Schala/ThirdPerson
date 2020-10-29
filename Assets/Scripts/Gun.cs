@@ -19,14 +19,20 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+	[Header("Components")]
 	public ParticleSystem particles;
 	public GameObject particlesPivot;
 	public GameObject bulletPrefab;
-	public AudioClip[] audioClips;
+	
+	[Header("Behavior")]
 	public Animator playerAnimator;
 	public float bulletSpeed = 5000f;
 	public float fireRate = 0.1f;
 	public int bulletLifetime = 3;
+
+	[Header("Misc.")]
+	public AudioClip[] audioClips;
+
 	public Ray ray { get; private set; }
 	AudioSource audioSource;
 	float firingLength = 0;

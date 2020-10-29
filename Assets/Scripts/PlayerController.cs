@@ -19,14 +19,20 @@ using UnityEngine;
 
 public class PlayerController : ConsoleReadyBehaviour
 {
+	[Header("Positioning")]
 	public GameObject castTarget;
 	public Transform spawnPoint;
+
+	[Header("Movement Physics")]
 	public float turnSpeed = 10f;
 	public float jumpStrength = 1f;
 	public float moveSpeedMultiplier = 2f;
-	public int maxHealth = 100;
 	public float gravityScale = -3f;
 	public float groundDistanceFactor = 10f;
+
+	[Header("Behavior")]
+	public int maxHealth = 100;
+
 	Animator animator;
 	Quaternion freeRotation;
 	Vector3 controllerVelocity;
