@@ -158,12 +158,12 @@ public class EnemyController : ConsoleReadyBehaviour
 
 	void OnAggro(Collider other, bool entering)
 	{
-		if (entering && other.gameObject.CompareTag(GameManager.PLAYER))
+		if (entering && other.gameObject.CompareTag("Player"))
 		{
 			aggroTarget = other.gameObject;
 			GameConsole.AddMessage($"<color=#FF0000>{ConsoleString()} has spotted \"{other.gameObject.name}\" ({other.gameObject.GetInstanceID():X8}) at a distance of {Vector3.Distance(other.gameObject.transform.position, gameObject.transform.position)}</color>");
 		}
-		if (!entering && other.gameObject.CompareTag(GameManager.PLAYER))
+		if (!entering && other.gameObject.CompareTag("Player"))
 		{
 			aggroTarget = null;
 			GameConsole.AddMessage($"<color=#00FF00>{ConsoleString()} has lost \"{other.gameObject.name}\" ({other.gameObject.GetInstanceID():X8})</color>");

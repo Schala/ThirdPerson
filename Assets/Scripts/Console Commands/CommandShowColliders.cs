@@ -30,7 +30,7 @@ public class CommandShowColliders : ConsoleCommand
 	{
 		if (args.Length != 2)
 		{
-			GameConsole.AddMessage($"{GameConsole.WRONG_NUMBER_PARAMETERS}: {args.Length - 1}");
+			GameConsole.AddMessage($"<color=#FF0000>Wrong number of parameters</color>: { args.Length - 1}");
 			return;
 		}
 
@@ -41,13 +41,13 @@ public class CommandShowColliders : ConsoleCommand
 		}
 		catch (FormatException)
 		{
-			GameConsole.AddMessage(GameConsole.INVALID_PARAMETERS);
+			GameConsole.AddMessage("<color=#FF0000>Invalid parameters</color>");
 			return;
 		}
 
-		GameObject[] objects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+		var objects = UnityEngine.Object.FindObjectsOfType<GameObject>();
 		for (int i = 0; i < objects.Length; i++)
-			if (objects[i].CompareTag(GameManager.SPAWNER) || objects[i].CompareTag(GameManager.WAYPOINT))
+			if (objects[i].CompareTag("Spawner"))
 				objects[i].GetComponent<MeshRenderer>().enabled = state;
 	}
 }

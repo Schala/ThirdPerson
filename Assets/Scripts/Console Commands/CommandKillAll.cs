@@ -29,15 +29,15 @@ public class CommandKillAll : ConsoleCommand
 	{
 		if (args.Length > 1)
 		{
-			GameConsole.AddMessage(GameConsole.WRONG_NUMBER_PARAMETERS);
+			GameConsole.AddMessage("<color=#FF0000>Wrong number of parameters</color>");
 			return;
 		}
 
-		GameObject[] entities = Object.FindObjectsOfType<GameObject>();
+		var entities = Object.FindObjectsOfType<GameObject>();
 		GameConsole.AddMessage("Execute Order 66!");
 
 		for (int i = 0; i < entities.Length; i++)
-			if (entities[i].CompareTag(GameManager.ENEMY))
+			if (entities[i].CompareTag("Enemy"))
 				Object.Destroy(entities[i]);
 	}
 }

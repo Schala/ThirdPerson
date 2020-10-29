@@ -29,15 +29,15 @@ public class CommandToggleAI : ConsoleCommand
 	{
 		if (args.Length > 2)
 		{
-			GameConsole.AddMessage(GameConsole.WRONG_NUMBER_PARAMETERS);
+			GameConsole.AddMessage("<color=#FF0000>Wrong number of parameters</color>");
 			return;
 		}
 
 		if (args.Length == 1)
 		{
-			GameObject[] entities = Object.FindObjectsOfType<GameObject>();
+			var entities = Object.FindObjectsOfType<GameObject>();
 			for (int i = 0; i < entities.Length; i++)
-				if (entities[i].CompareTag(GameManager.ENEMY))
+				if (entities[i].CompareTag("Enemy"))
 					entities[i].GetComponent<EnemyController>().ToggleAI();
 		}
 	}

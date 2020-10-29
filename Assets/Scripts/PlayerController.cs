@@ -28,7 +28,7 @@ public class PlayerController : ConsoleReadyBehaviour
 	public float jumpStrength = 1f;
 	public float moveSpeedMultiplier = 2f;
 	public float gravityScale = -3f;
-	public float groundDistanceFactor = 10f;
+	public float groundDistanceFactor = 1f;
 
 	[Header("Behavior")]
 	public int maxHealth = 100;
@@ -44,6 +44,7 @@ public class PlayerController : ConsoleReadyBehaviour
 	//float direction = 0f; // future use if we get directional animations
 	float velocity;
 	int health;
+	bool grounded = false;
 
 	void Awake()
 	{
@@ -63,18 +64,18 @@ public class PlayerController : ConsoleReadyBehaviour
 
 	void Rotate()
 	{
-		Vector3 forward = Camera.main.transform.TransformDirection(Vector3.forward);
+		var forward = Camera.main.transform.TransformDirection(Vector3.forward);
 		forward.y = 0f;
 		if (input.z < 0f) forward = -forward;
-		Vector3 targetDirection = input.x * Camera.main.transform.TransformDirection(Vector3.right) + input.z * forward;
+		var targetDirection = input.x * Camera.main.transform.TransformDirection(Vector3.right) + input.z * forward;
 
 		bool movement = input != Vector3.zero && targetDirection.magnitude > 0.1f;
 
-		if (movement || Input.GetAxis(GameManager.FIRE_1) == 1f)
+		if (movement || Input.GetAxis("Fire 1") == 1f)
 		{
 			if (movement)
 			{
-				Vector3 lookDirection = targetDirection.normalized;
+				var lookDirection = targetDirection.normalized;
 				freeRotation = Quaternion.LookRotation(lookDirection, transform.up);
 			}
 			else // fire button
@@ -90,9 +91,9 @@ public class PlayerController : ConsoleReadyBehaviour
 
 	private void FixedUpdate()
 	{
-		if (controllerVelocity.y < 0f)
-			if (Physics.Raycast(transform.position, -Vector3.up, out _, groundDistanceFactor))
-				controllerVelocity.y = 0f;
+		if (Physics.Raycast(transform.position, -Vector3.up, out _, groundDistanceFactor))
+			grounded = true;
+		else grounded = false;
 	}
 
 	void Move()
@@ -105,15 +106,15 @@ public class PlayerController : ConsoleReadyBehaviour
 		input.z = Mathf.Abs(input.z); // no moonwalking!
 		controller.Move(freeRotation * input * moveSpeed * moveSpeedMultiplier * Time.deltaTime); // apply movement
 
-		if (Input.GetMouseButtonDown(2)) animator.SetTrigger(GameManager.JUMP_HASH);
+		if (grounded && Input.GetMouseButtonDown(2)) animator.SetTrigger(GameManager.JUMP_HASH);
 
-		controllerVelocity.y += Physics.gravity.y * Time.deltaTime;
+		if (!grounded) controllerVelocity.y += Physics.gravity.y * Time.deltaTime;
 		controller.Move(controllerVelocity * Time.deltaTime); // apply the gravity
 	}
 
 	void Update()
 	{
-		input = new Vector3(Input.GetAxis(GameManager.HORIZONTAL), 0f, Input.GetAxis(GameManager.VERTICAL));
+		input = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 
 		Rotate();
 		Move();

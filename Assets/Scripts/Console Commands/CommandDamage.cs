@@ -30,7 +30,7 @@ public class CommandDamage : ConsoleCommand
 	{
 		if (args.Length != 2)
 		{
-			GameConsole.AddMessage($"{GameConsole.WRONG_NUMBER_PARAMETERS}: {args.Length - 1}");
+			GameConsole.AddMessage($"<color=#FF0000>Wrong number of parameters</color>: {args.Length - 1}");
 			return;
 		}
 
@@ -42,7 +42,7 @@ public class CommandDamage : ConsoleCommand
 		}
 		catch (FormatException)
 		{
-			GameConsole.AddMessage(GameConsole.INVALID_PARAMETERS);
+			GameConsole.AddMessage("<color=#FF0000>Invalid parameters</color>");
 			return;
 		}
 		catch (Exception e)

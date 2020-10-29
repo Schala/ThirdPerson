@@ -2314,14 +2314,14 @@ MonoBehaviour:
   particles: {fileID: 7815975506146852765}
   particlesPivot: {fileID: 7815975505991248599}
   bulletPrefab: {fileID: 725591640031288067, guid: 004bf56792299844386ab11272de5751, type: 3}
-  audioClips:
-  - {fileID: 8300000, guid: e621b3a3bc0f5bf4382975b7f272917e, type: 3}
-  - {fileID: 8300000, guid: e7fa14fbd84d8774a91fd710bdb42e3f, type: 3}
-  - {fileID: 8300000, guid: 2d0cdafafc367f94fad5ca68902d4cfb, type: 3}
   playerAnimator: {fileID: 7815975505728975221}
   bulletSpeed: 100
   fireRate: 0.1
   bulletLifetime: 3
+  audioClips:
+  - {fileID: 8300000, guid: e621b3a3bc0f5bf4382975b7f272917e, type: 3}
+  - {fileID: 8300000, guid: e7fa14fbd84d8774a91fd710bdb42e3f, type: 3}
+  - {fileID: 8300000, guid: 2d0cdafafc367f94fad5ca68902d4cfb, type: 3}
 --- !u!82 &7815975505567402194
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3089,9 +3089,9 @@ MonoBehaviour:
   turnSpeed: 150
   jumpStrength: 1
   moveSpeedMultiplier: 3
+  gravityScale: -3
+  groundDistanceFactor: 1
   maxHealth: 100
-  gravityScale: -5
-  groundDistanceFactor: -10
 --- !u!1 &7815975505729644319
 GameObject:
   m_ObjectHideFlags: 0

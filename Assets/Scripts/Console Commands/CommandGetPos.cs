@@ -31,7 +31,7 @@ public class CommandGetPos : ConsoleCommand
 	{
 		if (args.Length > 2)
 		{
-			GameConsole.AddMessage(GameConsole.WRONG_NUMBER_PARAMETERS);
+			GameConsole.AddMessage("<color=#FF0000>Wrong number of parameters</color>");
 			return;
 		}
 
@@ -51,7 +51,7 @@ public class CommandGetPos : ConsoleCommand
 			}
 			catch (FormatException)
 			{
-				GameConsole.AddMessage(GameConsole.INVALID_PARAMETERS);
+				GameConsole.AddMessage("<color=#FF0000>Invalid parameters</color>");
 				return;
 			}
 			catch (KeyNotFoundException)

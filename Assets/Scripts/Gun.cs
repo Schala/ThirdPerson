@@ -42,7 +42,7 @@ public class Gun : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (Input.GetAxis(GameManager.FIRE_1) == 1f)
+		if (Input.GetAxis("Fire 1") == 1f)
 		{
 			if (!firing)
 			{
@@ -57,7 +57,7 @@ public class Gun : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetAxis(GameManager.FIRE_1) == 1f)
+		if (Input.GetAxis("Fire 1") == 1f)
 		{
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Debug.DrawRay(ray.origin, ray.direction * bulletSpeed, Color.red, 2f);
@@ -105,7 +105,7 @@ public class Gun : MonoBehaviour
 	IEnumerator Fire()
 	{
 		// Fire toward the reticle
-		GameObject bullet = Instantiate(bulletPrefab, ray.origin, Quaternion.identity) as GameObject;
+		GameObject bullet = Instantiate(bulletPrefab, ray.origin, Quaternion.identity);
 		bullet.GetComponent<Rigidbody>().AddForce(ray.direction * bulletSpeed, ForceMode.Impulse);
 		yield return new WaitForSeconds(fireRate);
 		firing = false;

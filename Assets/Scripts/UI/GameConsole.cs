@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class ConsoleCommand
 {
@@ -29,10 +28,6 @@ public abstract class ConsoleCommand
 
 public class GameConsole : MonoBehaviour
 {
-    public const string COMMAND_NOT_RECOGNISED = "<color=#FF0000>Command not recognised</color>";
-    public const string INVALID_PARAMETERS = "<color=#FF0000>Invalid parameters</color>";
-    public const string WRONG_NUMBER_PARAMETERS = "<color=#FF0000>Wrong number of parameters</color>";
-
     public static GameConsole instance { get; private set; }
     public static Dictionary<string, ConsoleCommand> commands { get; private set; }
     public static GameObject selection { get; private set; }
@@ -160,14 +155,14 @@ public class GameConsole : MonoBehaviour
 
         if (splitInput.Length == 0 || splitInput == null)
         {
-            AddMessage(COMMAND_NOT_RECOGNISED);
+            AddMessage("<color=#FF0000>Command not recognised</color>");
             consoleInput.Select();
             return;
         }
 
         if (!commands.ContainsKey(splitInput[0]))
         {
-            AddMessage(COMMAND_NOT_RECOGNISED);
+            AddMessage("<color=#FF0000>Command not recognised</color>");
             consoleInput.Select();
             return;
         }

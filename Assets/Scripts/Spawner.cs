@@ -51,9 +51,9 @@ public class Spawner : ConsoleReadyBehaviour
         {
             for (int i = currentlySpawned; i <= limit; i++)
             {
-                Vector3 point = RandomPoint();
+                var point = RandomPoint();
                 GameObject enemyObject = Instantiate(enemyPrefabs[GameManager.random.Next(enemyPrefabs.Length)], point, Quaternion.identity);
-                EnemyController enemy = enemyObject.GetComponent<EnemyController>();
+                var enemy = enemyObject.GetComponent<EnemyController>();
 
                 if (NavMesh.SamplePosition(point, out NavMeshHit hit, navMeshCheckDistance, NavMesh.AllAreas))
                 {
@@ -94,15 +94,15 @@ public class Spawner : ConsoleReadyBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-        if (other.gameObject.CompareTag(GameManager.ENEMY))
+        if (other.gameObject.CompareTag("Enemy"))
         {
             GameConsole.AddMessage($"<color=#FF0000>{other.gameObject.GetComponent<EnemyController>().ConsoleString()} destroyed for exiting map boundaries.</color>");
             Destroy(other.gameObject);
         }
 
-        if (other.gameObject.CompareTag(GameManager.PLAYER))
+        if (other.gameObject.CompareTag("Player"))
         {
-            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+            var player = other.gameObject.GetComponent<PlayerController>();
             GameConsole.AddMessage($"<color=#FF0000>{player.ConsoleString()} exited map boundaries and was moved to spawn point.</color>");
             other.gameObject.transform.position = player.spawnPoint.position;
             GameManager.Announce(GameManager.instance.announcerClips[5]);

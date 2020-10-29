@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
 
 	void OnTriggerEnter(Collider collider)
 	{
-		if (!collider.gameObject.CompareTag(GameManager.ENEMY)) return;
+		if (!collider.gameObject.CompareTag("Enemy")) return;
 		collider.gameObject.GetComponent<EnemyController>().Damage(damage);
 
 		if (!soundExplained)

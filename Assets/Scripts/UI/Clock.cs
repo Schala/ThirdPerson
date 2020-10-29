@@ -13,9 +13,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
  */
- 
+
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Clock : MonoBehaviour
 {
@@ -23,7 +23,7 @@ public class Clock : MonoBehaviour
 
     public float slowFactor = 2f;
 
-    Text clockText;
+    TMP_Text clockText;
     float clockDelta;
     float clockMax;
     float clockSecond, clockMinute, clockHour;
@@ -32,7 +32,7 @@ public class Clock : MonoBehaviour
 
     void Start()
     {
-        clockText = GetComponent<Text>();
+        clockText = GetComponent<TMP_Text>();
         clockDelta = Time.deltaTime / slowFactor;
         sunTicks = 360f / clockDelta;
         clockSecond = sunTicks / REALTIME_DAY_SECONDS;

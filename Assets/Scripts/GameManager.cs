@@ -21,25 +21,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-	public const string HORIZONTAL = "Horizontal";
-	public const string VERTICAL = "Vertical";
-	public const string FIRE_1 = "Fire1";
-	public const string JUMP = "Jump";
-
-	public const string ENEMY = "Enemy";
-	public const string PLAYER = "Player";
-	public const string SPAWNER = "Spawner";
-	public const string WAYPOINT = "Waypoint";
-
-	public const string ANNOUNCER = "Announcer";
-
 	public static readonly int ATTACK_HASH = Animator.StringToHash("Attack");
 	public static readonly int ATTACK_VARIANT_HASH = Animator.StringToHash("Attack Variant");
 	public static readonly int DEAD_HASH = Animator.StringToHash("Dead");
 	public static readonly int FIRING_HASH = Animator.StringToHash("Firing");
 	public static readonly int HURT_HASH = Animator.StringToHash("Hurt");
 	public static readonly int HURT_VARIANT_HASH = Animator.StringToHash("Hurt Variant");
-	public static readonly int JUMP_HASH = Animator.StringToHash(JUMP);
+	public static readonly int JUMP_HASH = Animator.StringToHash("Jump");
 	public static readonly int SPEED_HASH = Animator.StringToHash("Speed");
 	public static readonly System.Random random = new System.Random();
 	public static GameManager instance { get; private set; }
@@ -64,7 +52,7 @@ public class GameManager : MonoBehaviour
 	private void Awake()
 	{
 		DontDestroyOnLoad(this.gameObject);
-		announcerAudio = GameObject.Find(ANNOUNCER).GetComponent<AudioSource>();
+		announcerAudio = GameObject.Find("Announcer").GetComponent<AudioSource>();
 		objects = new Dictionary<int, GameObject>();
 		instance = this;
 	}
