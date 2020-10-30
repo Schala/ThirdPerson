@@ -42,7 +42,7 @@ public class Gun : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (Input.GetAxis("Fire 1") == 1f)
+		if (Input.GetAxis("Fire1") == 1f)
 		{
 			if (!firing)
 			{
@@ -57,7 +57,7 @@ public class Gun : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetAxis("Fire 1") == 1f)
+		if (Input.GetAxis("Fire1") == 1f)
 		{
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			Debug.DrawRay(ray.origin, ray.direction * bulletSpeed, Color.red, 2f);

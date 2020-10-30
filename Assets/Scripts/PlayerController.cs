@@ -71,7 +71,7 @@ public class PlayerController : ConsoleReadyBehaviour
 
 		bool movement = input != Vector3.zero && targetDirection.magnitude > 0.1f;
 
-		if (movement || Input.GetAxis("Fire 1") == 1f)
+		if (movement || Input.GetAxis("Fire1") == 1f)
 		{
 			if (movement)
 			{
