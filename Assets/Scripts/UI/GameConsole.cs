@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class ConsoleCommand
 {
@@ -47,6 +48,7 @@ public class GameConsole : MonoBehaviour
     List<string> commandCache;
     TMP_Text entryPrefab;
     int cacheIndex = 0;
+    static bool exiting = false;
 
 	private void Awake()
 	{
@@ -73,11 +75,24 @@ public class GameConsole : MonoBehaviour
         commandCache = new List<string>();
     }
 
-    private void OnEnable() => Application.logMessageReceived += OnLogMessage;
-    private void OnDisable() => Application.logMessageReceived -= OnLogMessage;
-
-    void Update()
+    private void OnEnable()
     {
+        Application.logMessageReceived += OnLogMessage;
+        SceneManager.sceneUnloaded += OnSceneUnload;
+    }
+
+    private void OnDisable()
+    {
+        Application.logMessageReceived -= OnLogMessage;
+        SceneManager.sceneUnloaded -= OnSceneUnload;
+    }
+
+    private void OnSceneUnload<Scene>(Scene scene) => exiting = true;
+
+	void Update()
+    {
+        if (exiting) return;
+
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             console.SetActive(!console.activeInHierarchy);
@@ -147,7 +162,11 @@ public class GameConsole : MonoBehaviour
         if (entries.Count > entryLimit) entries.RemoveAt(0);
     }
 
-    public static void AddMessage(string message) => instance.AddMessageInternal(message);
+    public static void AddMessage(string message)
+    {
+        if (exiting) return;
+        instance.AddMessageInternal(message);
+    }
 
     void ParseInput(string input)
     {
@@ -173,6 +192,8 @@ public class GameConsole : MonoBehaviour
 
     void OnLogMessage(string logMessage, string stackTrace, LogType type)
     {
+        if (exiting) return;
+
         string typeColor = string.Empty;
 
         switch (type)

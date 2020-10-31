@@ -43,7 +43,7 @@ public class Spawner : ConsoleReadyBehaviour
         intervalDelta = interval;
     }
 
-    void Update()
+    /*void Update()
     {
         if (!active || currentlySpawned >= limit) return;
 
@@ -90,7 +90,7 @@ public class Spawner : ConsoleReadyBehaviour
             y = boundary.bounds.max.y,
             z = Random.Range(boundary.bounds.min.z, boundary.bounds.max.z),
         };
-    }
+    }*/
 
 	private void OnTriggerExit(Collider other)
 	{

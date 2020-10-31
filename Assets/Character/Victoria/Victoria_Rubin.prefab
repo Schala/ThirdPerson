@@ -3805,18 +3805,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4b27fe1a24d3254682b6daf4da3a57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathAudio: {fileID: 8300000, guid: ec796798ca668a546a5ed99cd0c642bb, type: 3}
-  spawner: {fileID: 0}
-  castOrigin: {fileID: 7464828350536272740}
-  hud: {fileID: 5822111252534894728}
   layerMask:
     serializedVersion: 2
     m_Bits: 512
-  maxHealth: 10
   corpseDespawnDelay: 5
   deathEffectLifetime: 3
   attackInterval: 1
   attackDistance: 0.75
+  maxHealth: 10
+  spawner: {fileID: 0}
+  castOrigin: {fileID: 7464828350536272740}
+  hud: {fileID: 5822111252534894728}
+  deathAudio: {fileID: 8300000, guid: ec796798ca668a546a5ed99cd0c642bb, type: 3}
 --- !u!135 &6323845977038851657
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7390,6 +7390,10 @@ PrefabInstance:
     - target: {fileID: 7604796537431803742, guid: 4b664f20a482e6b4795811482f873895, type: 3}
       propertyPath: m_Name
       value: Aggro Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 7604796537431803742, guid: 4b664f20a482e6b4795811482f873895, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b664f20a482e6b4795811482f873895, type: 3}

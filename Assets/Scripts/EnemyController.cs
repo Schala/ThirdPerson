@@ -18,30 +18,30 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyController : ConsoleReadyBehaviour
 {
 	[Header("Behavior")]
 	public LayerMask layerMask;
 	public float corpseDespawnDelay = 5f;
-	public float deathEffectLifetime = 3f;
 	public float attackInterval = 1f;
 	public float attackDistance = 0.75f;
 	public int maxHealth = 10;
 
 	[Header("Positioning")]
 	public Action spawnerCallback;
-	public Spawner spawner;
+	public WaveSpawner spawner;
 	public GameObject castOrigin;
 
 	[Header("Aesthetic")]
 	public GameObject hud;
-	public AudioClip deathAudio;
 
 	Animator animator;
 	AudioSource audioSource;
 	AudioClip attackAudio;
 	HealthBar healthBar;
+
 	public NavMeshAgent agent { get; set; }
 	public GameObject aggroTarget { get; private set; }
 	public CharacterController controller { get; private set; }
@@ -57,8 +57,8 @@ public class EnemyController : ConsoleReadyBehaviour
 	{
 		animator = GetComponent<Animator>();
 		audioSource = GetComponent<AudioSource>();
-		GetComponentInChildren<AggroTrigger>().aggroCallback = OnAggro;
-		aggroTarget = null;
+		//GetComponentInChildren<AggroTrigger>().aggroCallback = OnAggro;
+		//aggroTarget = null;
 		deathEffect = Resources.Load<ParticleSystem>("Prefabs/Death Effect");
 		attackAudio = Resources.Load<AudioClip>("Audio/hit");
 		controller = GetComponent<CharacterController>();
@@ -72,13 +72,15 @@ public class EnemyController : ConsoleReadyBehaviour
 
 	void Start()
     {
-		nextWaypoint = spawner.RandomPoint();
+		aggroTarget = GameConsole.player;
+		//nextWaypoint = spawner.RandomPoint();
 		animator.SetFloat(GameManager.SPEED_HASH, agent.speed);
 	}
 
 	void Update()
     {
-        if (health <= 0)
+		if (aggroTarget != null && aggroTarget.GetComponent<PlayerController>().dead) aggroTarget = null;
+		if (health <= 0)
 		{
 			animator.SetBool(GameManager.DEAD_HASH, true);
 			agent.enabled = false;
@@ -87,10 +89,10 @@ public class EnemyController : ConsoleReadyBehaviour
 			if (GameManager.random.Next(2) == 1 && !announceDeath)
 				GameManager.Announce(GameManager.instance.announcerClips[GameManager.random.Next(2, 5)]);
 			announceDeath = true;
-			Destroy(gameObject, corpseDespawnDelay);
+			StartCoroutine(Death());
 		}
 
-		if (transform.position.x > (nextWaypoint.x - 1) && transform.position.y > (nextWaypoint.y - 1) &&
+		if (aggroTarget == null && transform.position.x > (nextWaypoint.x - 1) && transform.position.y > (nextWaypoint.y - 1) &&
 			transform.position.x < (nextWaypoint.x + 1) && transform.position.y < (nextWaypoint.y + 1))
 		{
 			nextWaypoint = spawner.RandomPoint();
@@ -118,7 +120,9 @@ public class EnemyController : ConsoleReadyBehaviour
 		if (!aggroTarget) return;
 
 		AudioSource.PlayClipAtPoint(attackAudio, transform.position);
-		aggroTarget.GetComponent<PlayerController>().Damage(GameManager.random.Next(2, 6));
+		var player = aggroTarget.GetComponent<PlayerController>();
+
+		player.Damage(GameManager.random.Next(2, 6));
 	}
 
 	public void Damage(int damage)
@@ -129,7 +133,11 @@ public class EnemyController : ConsoleReadyBehaviour
 		else
 		{
 			healthBar.current = 0;
-			if (!announceDeath) GameManager.AddToScore(GameManager.instance.scorePerEnemy);
+			if (!announceDeath)
+			{
+				GameManager.AddToScore(GameManager.instance.scorePerEnemy);
+				GameConsole.AddMessage($"{ConsoleString()} has been killed.");
+			}
 		}
 
 		animator.SetTrigger(GameManager.HURT_HASH);
@@ -144,19 +152,22 @@ public class EnemyController : ConsoleReadyBehaviour
 		yield return new WaitForSeconds(audioSource.clip.length);
 	}
 
+	IEnumerator Death()
+	{
+		yield return new WaitForSeconds(corpseDespawnDelay);
+		Instantiate(deathEffect, transform.position, Quaternion.identity);
+		Destroy(gameObject);
+	}
+
 	private void OnDestroy()
 	{
 		if (exiting) return;
 		spawnerCallback();
-		AudioSource.PlayClipAtPoint(deathAudio, transform.position);
-		var deathEffectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
-		Destroy(deathEffectInstance, deathEffectLifetime);
-		GameConsole.AddMessage($"{ConsoleString()} has been killed.");
 	}
 
 	private void OnApplicationQuit() => exiting = true;
 
-	void OnAggro(Collider other, bool entering)
+	/*void OnAggro(Collider other, bool entering)
 	{
 		if (entering && other.gameObject.CompareTag("Player"))
 		{
@@ -168,5 +179,5 @@ public class EnemyController : ConsoleReadyBehaviour
 			aggroTarget = null;
 			GameConsole.AddMessage($"<color=#00FF00>{ConsoleString()} has lost \"{other.gameObject.name}\" ({other.gameObject.GetInstanceID():X8})</color>");
 		}
-	}
+	}*/
 }

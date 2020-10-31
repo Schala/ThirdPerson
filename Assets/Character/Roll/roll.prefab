@@ -3090,7 +3090,7 @@ MonoBehaviour:
   jumpStrength: 1
   moveSpeedMultiplier: 3
   gravityScale: -3
-  groundDistanceFactor: 1
+  groundDistanceFactor: 0.25
   maxHealth: 100
 --- !u!1 &7815975505729644319
 GameObject:

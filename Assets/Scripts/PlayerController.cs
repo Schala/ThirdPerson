@@ -14,8 +14,10 @@
  * Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : ConsoleReadyBehaviour
 {
@@ -28,7 +30,7 @@ public class PlayerController : ConsoleReadyBehaviour
 	public float jumpStrength = 1f;
 	public float moveSpeedMultiplier = 2f;
 	public float gravityScale = -3f;
-	public float groundDistanceFactor = 1f;
+	public float groundDistanceFactor = 0.25f;
 
 	[Header("Behavior")]
 	public int maxHealth = 100;
@@ -45,6 +47,7 @@ public class PlayerController : ConsoleReadyBehaviour
 	float velocity;
 	int health;
 	bool grounded = false;
+	public bool dead { get; private set; }
 
 	void Awake()
 	{
@@ -57,6 +60,7 @@ public class PlayerController : ConsoleReadyBehaviour
 
 	private void Start()
 	{
+		dead = false;
 		health = maxHealth;
 		healthBar.maxValue = maxHealth;
 		healthBar.current = maxHealth;
@@ -114,6 +118,7 @@ public class PlayerController : ConsoleReadyBehaviour
 
 	void Update()
 	{
+		if (dead) return;
 		input = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
 
 		Rotate();
@@ -130,12 +135,25 @@ public class PlayerController : ConsoleReadyBehaviour
 	{
 		health -= amount;
 		if (health > 0) healthBar.current -= amount;
-		else healthBar.current = 0;
+		else
+		{
+			healthBar.current = 0;
+			dead = true;
+			GameManager.Announce(GameManager.instance.announcerClips[6]);
+			animator.SetBool(GameManager.DEAD_HASH, true);
+			StartCoroutine(Restart());
+		}
 
 		GameObject dtext = Instantiate(damageText, (Vector3.up * 2.125f) + transform.position, Quaternion.identity);
 		dtext.GetComponentInChildren<TMP_Text>().text = amount.ToString();
 
 		animator.SetInteger(GameManager.HURT_VARIANT_HASH, GameManager.random.Next(0, 2));
 		animator.SetTrigger(GameManager.HURT_HASH);
+	}
+
+	IEnumerator Restart()
+	{
+		yield return new WaitForSeconds(5f);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 }
